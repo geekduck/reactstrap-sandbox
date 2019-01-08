@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button } from 'reactstrap';
-import { Tooltip } from 'reactstrap';
+import { Button, Tooltip } from 'reactstrap';
 
 class App extends Component {
   constructor(props) {
@@ -28,9 +27,11 @@ class App extends Component {
     return (
       <div>
           <div>{`${this.state.isOn}`}</div>
-          <CustomTooltip isOn={this.state.isOn}>
-            <Counter count={10} parentForceRender={this.forceRender} />
-          </CustomTooltip>
+          {[1,2,3].map((elem, index) => {
+            return (<CustomTooltip key={elem} isOn={this.state.isOn}>
+              <Counter count={10} parentForceRender={this.forceRender} />
+            </CustomTooltip>);
+          })}
       </div>
     );
   }
@@ -45,6 +46,7 @@ class Counter extends Component {
       count
     };
     this.countUp = this.countUp.bind(this);
+    console.log("Counter const");
   }
 
   componentDidUpdate() {
@@ -64,7 +66,7 @@ class Counter extends Component {
   }
 
   render() {
-    console.log("child render");
+    console.log(`child render`);
     return (
       <div>
         <div>{this.state.count}</div>
@@ -94,6 +96,10 @@ class CustomTooltip extends Component {
   render() {
     const {children, isOn} = this.props;
     console.log(isOn);
+    // <div ref={this.targetRef}>{children}</div>
+      // {React.Children.map(children, child =>
+      //   React.cloneElement(child, { ref: this.targetRef })
+      // )}
     return (
       <React.Fragment>
         <div ref={this.targetRef}>{children}</div>
